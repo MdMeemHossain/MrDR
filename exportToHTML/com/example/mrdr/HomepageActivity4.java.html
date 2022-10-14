@@ -1,0 +1,158 @@
+<html>
+<head>
+<title>HomepageActivity4.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #6897bb;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+HomepageActivity4.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com.example.mrdr</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">androidx.appcompat.widget.Toolbar</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.view.View</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">android.widget.ExpandableListView</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">com.airbnb.lottie.LottieAnimationView</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.applozic.mobicommons.commons.core.utils.Utils</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.HashMap</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span>
+
+<span class="s0">import </span><span class="s1">io.kommunicate.KmConversationBuilder</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">io.kommunicate.Kommunicate</span><span class="s0">;</span>
+<span class="s0">import </span><span class="s1">io.kommunicate.callbacks.KmCallback</span><span class="s0">;</span>
+
+
+<span class="s0">public class </span><span class="s1">HomepageActivity4 </span><span class="s0">extends </span><span class="s1">AppCompatActivity {</span>
+      <span class="s1">ExpandableListView expandableListView</span><span class="s0">;</span>
+      <span class="s1">List &lt;String&gt; listGroup</span><span class="s0">;</span>
+      <span class="s1">HashMap &lt;String</span><span class="s0">,</span><span class="s1">List&lt;String&gt;&gt; listItem</span><span class="s0">;</span>
+      <span class="s1">MainAdapter adapter</span><span class="s0">;</span>
+      <span class="s1">LottieAnimationView chatbot2</span><span class="s0">;</span>
+      <span class="s0">private </span><span class="s1">View logouth</span><span class="s0">;</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) {</span>
+        <span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span>
+        <span class="s1">setContentView(R.layout.activity_homepage4)</span><span class="s0">;</span>
+        <span class="s1">Kommunicate.init(</span><span class="s0">this, </span><span class="s2">&quot;2f93644cdc04e352bd0c8e534efd64c8c&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">Toolbar toolbar= findViewById(R.id.toolbar)</span><span class="s0">;</span>
+        <span class="s1">setSupportActionBar(toolbar)</span><span class="s0">;</span>
+        <span class="s1">getSupportActionBar().setTitle(</span><span class="s2">&quot;Homepage&quot;</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">getSupportActionBar().setDisplayHomeAsUpEnabled(</span><span class="s0">true</span><span class="s1">)</span><span class="s0">;</span>
+        <span class="s1">chatbot2 = findViewById(R.id.chatbot2)</span><span class="s0">;</span>
+        <span class="s1">logouth = (View) findViewById(R.id.logouth)</span><span class="s0">;</span>
+        <span class="s1">expandableListView = findViewById(R.id.expandable_listview)</span><span class="s0">;</span>
+        <span class="s1">listGroup = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">listItem = </span><span class="s0">new </span><span class="s1">HashMap&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">adapter = </span><span class="s0">new </span><span class="s1">MainAdapter(</span><span class="s0">this,</span><span class="s1">listGroup</span><span class="s0">,</span><span class="s1">listItem)</span><span class="s0">;</span>
+        <span class="s1">expandableListView.setAdapter(adapter)</span><span class="s0">;</span>
+        <span class="s1">initListData()</span><span class="s0">;</span>
+
+    <span class="s1">}</span>
+
+    <span class="s0">private void </span><span class="s1">initListData() {</span>
+        <span class="s1">listGroup.add(getString(R.string.clinicdetails))</span><span class="s0">;</span>
+        <span class="s1">listGroup.add(getString(R.string.doctordetails))</span><span class="s0">;</span>
+        <span class="s1">listGroup.add(getString(R.string.appointment))</span><span class="s0">;</span>
+        <span class="s1">listGroup.add(getString(R.string.feedback))</span><span class="s0">;</span>
+        <span class="s1">listGroup.add(getString(R.string.help))</span><span class="s0">;</span>
+        <span class="s1">String[] array</span><span class="s0">;</span>
+        <span class="s1">List&lt;String&gt; list1 = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">array = getResources().getStringArray(R.array.clinicdetails)</span><span class="s0">;</span>
+        <span class="s0">for </span><span class="s1">(String item : array){</span>
+            <span class="s1">list1.add(item)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">List&lt;String&gt; list2 = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">array = getResources().getStringArray(R.array.doctordetails)</span><span class="s0">;</span>
+        <span class="s0">for </span><span class="s1">(String item : array){</span>
+            <span class="s1">list2.add(item)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">List&lt;String&gt; list3 = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">array = getResources().getStringArray(R.array.appointment)</span><span class="s0">;</span>
+        <span class="s0">for </span><span class="s1">(String item : array){</span>
+            <span class="s1">list3.add(item)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">List&lt;String&gt; list4 = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">array = getResources().getStringArray(R.array.feedback)</span><span class="s0">;</span>
+        <span class="s0">for </span><span class="s1">(String item : array){</span>
+            <span class="s1">list4.add(item)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+
+        <span class="s1">List&lt;String&gt; list5 = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span>
+        <span class="s1">array = getResources().getStringArray(R.array.help)</span><span class="s0">;</span>
+        <span class="s0">for </span><span class="s1">(String item : array){</span>
+            <span class="s1">list5.add(item)</span><span class="s0">;</span>
+        <span class="s1">}</span>
+        <span class="s1">listItem.put(listGroup.get(</span><span class="s3">0</span><span class="s1">)</span><span class="s0">,</span><span class="s1">list1)</span><span class="s0">;</span>
+        <span class="s1">listItem.put(listGroup.get(</span><span class="s3">1</span><span class="s1">)</span><span class="s0">,</span><span class="s1">list2)</span><span class="s0">;</span>
+        <span class="s1">listItem.put(listGroup.get(</span><span class="s3">2</span><span class="s1">)</span><span class="s0">,</span><span class="s1">list3)</span><span class="s0">;</span>
+        <span class="s1">listItem.put(listGroup.get(</span><span class="s3">3</span><span class="s1">)</span><span class="s0">,</span><span class="s1">list4)</span><span class="s0">;</span>
+        <span class="s1">listItem.put(listGroup.get(</span><span class="s3">4</span><span class="s1">)</span><span class="s0">,</span><span class="s1">list5)</span><span class="s0">;</span>
+        <span class="s1">adapter.notifyDataSetChanged()</span><span class="s0">;</span>
+
+        <span class="s1">chatbot2.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">Kommunicate.openConversation(HomepageActivity4.</span><span class="s0">this, null, new </span><span class="s1">KmCallback() {</span>
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onSuccess(Object message) {</span>
+                        <span class="s1">Utils.printLog(HomepageActivity4.</span><span class="s0">this, </span><span class="s2">&quot;ChatTest&quot;</span><span class="s0">, </span><span class="s2">&quot;Launch Success : &quot; </span><span class="s1">+ message)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+
+                    <span class="s1">@Override</span>
+                    <span class="s0">public void </span><span class="s1">onFailure(Object error) {</span>
+                        <span class="s1">Utils.printLog(HomepageActivity4.</span><span class="s0">this, </span><span class="s2">&quot;ChatTest&quot;</span><span class="s0">, </span><span class="s2">&quot;Launch Failure : &quot; </span><span class="s1">+ error)</span><span class="s0">;</span>
+                    <span class="s1">}</span>
+                <span class="s1">})</span><span class="s0">;</span>
+
+                <span class="s1">List&lt;String&gt; botList = </span><span class="s0">new </span><span class="s1">ArrayList()</span><span class="s0">; </span><span class="s1">botList.add(</span><span class="s2">&quot;mr-dr--riwdj&quot;</span><span class="s1">)</span><span class="s0">; </span><span class="s4">//enter your integrated bot Ids</span>
+                <span class="s0">new </span><span class="s1">KmConversationBuilder(HomepageActivity4.</span><span class="s0">this</span><span class="s1">).setAppId(</span><span class="s2">&quot;2f93644cdc04e352bd0c8e534efd64c8c&quot;</span><span class="s1">)</span>
+                        <span class="s1">.setBotIds(botList)</span>
+                        <span class="s1">.launchConversation(</span><span class="s0">new </span><span class="s1">KmCallback() {</span>
+                            <span class="s1">@Override</span>
+                            <span class="s0">public void </span><span class="s1">onSuccess(Object message) {</span>
+                                <span class="s1">Utils.printLog(HomepageActivity4.</span><span class="s0">this, </span><span class="s2">&quot;ChatTest&quot;</span><span class="s0">, </span><span class="s2">&quot;Success : &quot; </span><span class="s1">+ message)</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+
+                            <span class="s1">@Override</span>
+                            <span class="s0">public void </span><span class="s1">onFailure(Object error) {</span>
+                                <span class="s1">Utils.printLog(HomepageActivity4.</span><span class="s0">this, </span><span class="s2">&quot;ChatTest&quot;</span><span class="s0">, </span><span class="s2">&quot;Failure : &quot; </span><span class="s1">+ error)</span><span class="s0">;</span>
+                            <span class="s1">}</span>
+                        <span class="s1">})</span><span class="s0">;</span>
+
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+
+        <span class="s1">logouth.setOnClickListener(</span><span class="s0">new </span><span class="s1">View.OnClickListener() {</span>
+            <span class="s1">@Override</span>
+            <span class="s0">public void </span><span class="s1">onClick(View v) {</span>
+                <span class="s1">FirebaseAuth.getInstance().signOut()</span><span class="s0">;</span>
+                <span class="s1">startActivity(</span><span class="s0">new </span><span class="s1">Intent(HomepageActivity4.</span><span class="s0">this, </span><span class="s1">LoginActivity3.</span><span class="s0">class</span><span class="s1">))</span><span class="s0">;</span>
+            <span class="s1">}</span>
+        <span class="s1">})</span><span class="s0">;</span>
+    <span class="s1">}</span>
+
+<span class="s1">}</span></pre>
+</body>
+</html>

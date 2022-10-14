@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">MrDR</string>
+    <string name="clinicdetails">Clinic Details </string>
+    <string name="doctordetails">Doctor Details </string>
+    <string name="appointment"> Appointment </string>
+    <string name="feedback"> Feedback </string>
+    <string name="help"> Help </string>
+    <dimen name="fab_margin">16dp</dimen>
+    <string-array name="clinicdetails">
+        <item>Location</item>
+        <item>Services</item>
+        <item>About Us</item>
+    </string-array>
+    <string-array name="doctordetails">
+        <item>Doctor List</item>
+        <item>Emergency</item>
+    </string-array>
+    <string-array name="appointment">
+        <item>Apply Appointment</item>
+        <item>Check Status </item>
+    </string-array>
+    <string-array name="feedback">
+        <item>Write Your Feedback </item>
+    </string-array>
+    <string-array name="help">
+        <item> </item>
+    </string-array>
+</resources>
